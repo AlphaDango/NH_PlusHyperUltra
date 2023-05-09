@@ -1,34 +1,19 @@
 package model;
 
-/**
- * Caregivers take care of patients at NURSING home
- */
-public class Caregiver extends Person {
-    private String phoneNumber;
+import java.time.LocalDate;
 
-    /**
-    * constructs a caregiver from the given params
-    *
-    * @param firstname
-    * @param surname
-    * @param phoneNumber
-    */
-    public Caregiver(String firstname, String surname, String phoneNumber) {
-        super(firstname, surname);
-        this.phoneNumber = phoneNumber;
-    }
+public class Caregiver extends Person{
 
-    /**
-     * @return phoneNumber as string
-     */
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+    String UserName, HashedPasswort, Phone;
 
-    /**
-     * @param phoneNumber
-     */
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    Integer PermissionLevel;
+
+
+
+
+
+
+    public Caregiver(String firstName, String surname) {
+        super(firstName, surname);
     }
 }
