@@ -46,7 +46,7 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
     }
 
     /**
-     * maps a <code>ResultSet</code> to a <code>Patient</code>
+     * maps a <code>ResultSet</code> to a <code>Caregiver</code>
      *
      * @param result ResultSet with a single row. Columns will be mapped to a caregiver-object.
      * @return caregiver with the data from the resultSet.
@@ -81,7 +81,7 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
         Caregiver c = null;
         while (result.next()) {
             //LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
-            c = new Caregiver(result.getString(1), result.getString(2), result.getString(3));
+            c = new Caregiver(result.getInt(1), result.getString(2), result.getString(3), result.getString(4));
             list.add(c);
         }
         return list;

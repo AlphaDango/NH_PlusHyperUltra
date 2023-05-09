@@ -40,10 +40,10 @@ public class AllCaregiverController {
     Button btnAdd;
 
     @FXML
-    TextField txfFirstname;
+    TextField txfSurname;
 
     @FXML
-    TextField txfSurname;
+    TextField txfFirstname;
 
     @FXML
     TextField txfTelephone;
@@ -132,7 +132,7 @@ public class AllCaregiverController {
         List<Caregiver> allCaregivers;
         try {
             allCaregivers = dao.readAll();
-            for (Caregiver c : allCaregivers) {
+            for (   Caregiver c : allCaregivers) {
                 this.tableViewContent.add(c);
             }
         } catch (SQLException e) {

@@ -63,7 +63,7 @@ public class Caregiver extends Person {
      * @return string-representation of the caregiver
      */
     public String toString() {
-        return "CareGiver" + "\nMNID: " + this.cid + "\nFirstname: " + this.getFirstName()
+        return "Caregiver" + "\nMNID: " + this.cid + "\nFirstname: " + this.getFirstName()
                 + "\nSurname: " + this.getSurname() + "\nPhoneNumber: " + this.getPhoneNumber() + "\n";
     }
 }
