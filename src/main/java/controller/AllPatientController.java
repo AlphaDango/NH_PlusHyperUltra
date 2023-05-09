@@ -189,7 +189,7 @@ public class AllPatientController {
     }
 
     /**
-     * handles a add-click-event. Creates a patient and calls the create method in the
+     * handles an add-click-event. Creates a patient and calls the create method in the
      * {@link PatientDAO}
      */
     @FXML
