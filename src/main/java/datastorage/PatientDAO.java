@@ -40,7 +40,7 @@ public class PatientDAO extends DAOimp<Patient> {
     /**
      * generates a <code>select</code>-Statement for a given key
      * 
-     * @param key for which a specific SELECTis to be created
+     * @param key for which a specific SELECT is to be created
      * @return <code>String</code> with the generated SQL.
      */
     @Override
