@@ -8,16 +8,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import model.Caregiver;
 
-import javax.swing.border.Border;
-import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -43,6 +38,9 @@ public class AllCaregiverController {
     private TableColumn<Caregiver, String> colTelephone;
 
     @FXML
+    private TableColumn<Caregiver, String> colRole;
+
+    @FXML
     Button btnDelete;
 
     @FXML
@@ -56,6 +54,9 @@ public class AllCaregiverController {
 
     @FXML
     TextField txfTelephone;
+
+    @FXML
+    ChoiceBox cbxRole;
 
     private ObservableList<Caregiver> tableViewContent = FXCollections.observableArrayList();
 
@@ -82,6 +83,9 @@ public class AllCaregiverController {
 
         this.colTelephone.setCellValueFactory(new PropertyValueFactory<Caregiver, String>("phoneNumber"));
         this.colTelephone.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        this.colRole.setCellValueFactory(new PropertyValueFactory<Caregiver, String>("role"));
+        this.colRole.setCellFactory(TextFieldTableCell.forTableColumn());
 
         this.tableView.setItems(this.tableViewContent);
     }
@@ -116,6 +120,17 @@ public class AllCaregiverController {
     @FXML
     public void handleOnEditPhoneNumber(TableColumn.CellEditEvent<Caregiver, String> event){
         event.getRowValue().setPhoneNumber(event.getNewValue());
+        doUpdate(event);
+    }
+
+    /**
+     * handles new role value
+     *
+     * @param event event including the value that a user entered into the cell
+     */
+    @FXML
+    public void handleOnEditRole(TableColumn.CellEditEvent<Caregiver, String> event){
+        event.getRowValue().setRole(event.getNewValue());
         doUpdate(event);
     }
 
@@ -178,8 +193,9 @@ public class AllCaregiverController {
             String firstname = this.txfFirstname.getText();
             String surname = this.txfSurname.getText();
             String phoneNumber = this.txfTelephone.getText();
+            String role = this.cbxRole.getValue().toString();
             try {
-                Caregiver c = new Caregiver(firstname, surname, phoneNumber);
+                Caregiver c = new Caregiver(firstname, surname, phoneNumber, role);
                 dao.create(c);
             } catch (SQLException e) {
                 e.printStackTrace();

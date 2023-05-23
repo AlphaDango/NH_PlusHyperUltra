@@ -3,7 +3,7 @@ package model;
 /**
  * Caregivers take care of patients at NURSING home
  */
-public class Caregiver extends Person {
+public class Caregiver extends User {
 
     private long cid;
     private String phoneNumber;
@@ -14,23 +14,25 @@ public class Caregiver extends Person {
     * @param firstname
     * @param surname
     * @param phoneNumber
+     * @param role
     */
-    public Caregiver(String firstname, String surname, String phoneNumber) {
-        super(firstname, surname);
+    public Caregiver(String firstname, String surname, String phoneNumber, String role) {
+        super(firstname, surname, role);
         this.phoneNumber = phoneNumber;
     }
 
     /**
      * constructs a patient from the given params
      *
-     * @params cid
-     * @params firstName
-     * @params surname
-     * @params phoneNumber
+     * @param cid
+     * @param firstName
+     * @param surname
+     * @param phoneNumber
+     * @param role
      */
 
-    public Caregiver (long cid, String firstName, String surname, String phoneNumber) {
-        super(firstName, surname);
+    public Caregiver (long cid, String firstName, String surname, String phoneNumber, String role) {
+        super(firstName, surname,role);
         this.cid = cid;
         this.phoneNumber = phoneNumber;
     }
@@ -64,6 +66,7 @@ public class Caregiver extends Person {
      */
     public String toString() {
         return "Caregiver" + "\nMNID: " + this.cid + "\nFirstname: " + this.getFirstName()
-                + "\nSurname: " + this.getSurname() + "\nPhoneNumber: " + this.getPhoneNumber() + "\n";
+                + "\nSurname: " + this.getSurname() + "\nPhoneNumber: " + this.getPhoneNumber() +
+                "\nRole: " + this.getRole() +"\n";
     }
 }
