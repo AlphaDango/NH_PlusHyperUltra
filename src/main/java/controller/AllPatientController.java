@@ -4,6 +4,7 @@ import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -36,8 +37,13 @@ public class AllPatientController {
     @FXML
     private TableColumn<Patient, String> colRoom;
 
+    // this archiveTable is for role Admin implementation if required
+    // @FXML
+    // private TableColumn<Patient, String> colArchivedDatum;
+
+
     @FXML
-    Button btnDelete;
+    Button btnArchive;
     @FXML
     Button btnAdd;
     @FXML
@@ -61,6 +67,11 @@ public class AllPatientController {
     public void initialize() {
         readAllAndShowInTableView();
 
+        // this deletes the patient archive
+        deleteAllPatientArchiveOlderThanTen();
+
+
+
         this.colID.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("pid"));
 
         // CellValuefactory zum Anzeigen der Daten in der TableView
@@ -82,6 +93,12 @@ public class AllPatientController {
 
         this.colRoom.setCellValueFactory(new PropertyValueFactory<Patient, String>("roomnumber"));
         this.colRoom.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        // for Admin role this data can be shown if the feature is required
+        // this.colArchivedDatum
+        // .setCellValueFactory(new PropertyValueFactory<Patient, String>("dateOfArchived"));
+        // this.colArchivedDatum.setCellFactory(TextFieldTableCell.forTableColumn());
+        //
 
         this.tableView.setItems(this.tableviewContent);
     }
@@ -107,6 +124,7 @@ public class AllPatientController {
         event.getRowValue().setSurname(event.getNewValue());
         doUpdate(event);
     }
+
 
     /**
      * handles new birthdate value
@@ -162,7 +180,7 @@ public class AllPatientController {
         this.dao = DAOFactory.getDAOFactory().createPatientDAO();
         List<Patient> allPatients;
         try {
-            allPatients = dao.readAll();
+            allPatients = dao.getAllNoneArchivedPatients();
             for (Patient p : allPatients) {
                 this.tableviewContent.add(p);
             }
@@ -172,16 +190,15 @@ public class AllPatientController {
     }
 
     /**
-     * handles a delete-click-event. Calls the delete methods in the {@link PatientDAO} and
+     * handles a archive-click-event. Calls the update methods in the {@link PatientDAO} and Saves
      * {@link TreatmentDAO}
      */
     @FXML
-    public void handleDeleteRow() {
-        TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
+    public void handleArchiveRowSperren() {
         Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         try {
-            tDao.deleteByPid(selectedItem.getPid());
-            dao.deleteById(selectedItem.getPid());
+            selectedItem.setDateOfArchive(LocalDate.now());
+            dao.update(selectedItem);
             this.tableView.getItems().remove(selectedItem);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -219,5 +236,42 @@ public class AllPatientController {
         this.txtBirthday.clear();
         this.txtCarelevel.clear();
         this.txtRoom.clear();
+    }
+
+    /**
+     * for better design it is recommended to seperate business logic from controller however we do
+     * not have service layer and therefore it is written here
+     * 
+     * the function deletes the archive if it is older than 10 years
+     * 
+     * 
+     */
+    private void deleteAllPatientArchiveOlderThanTen() {
+        TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
+        dao = DAOFactory.getDAOFactory().createPatientDAO();
+        try {
+            List<Patient> allPatient = dao.getAllArchivedPatients().stream()
+                    .filter(patient -> isMoreThanTenYearsAgo(patient.getDateOfArchive())).toList();
+            allPatient.stream().forEach(pToDel -> {
+                try {
+                    long id = pToDel.getPid();
+                    tDao.deleteByPid(id);
+                    dao.deleteById(id);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private boolean isMoreThanTenYearsAgo(String dateArchive) {
+        LocalDate date = DateConverter.convertStringToLocalDate(dateArchive);
+        LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
+        return date.isBefore(tenYearsAgo);
     }
 }

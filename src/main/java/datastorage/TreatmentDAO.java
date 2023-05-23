@@ -19,10 +19,11 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected String getCreateStatementString(Treatment treatment) {
-        return String.format("INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks) VALUES " +
-                "(%d, '%s', '%s', '%s', '%s', '%s')", treatment.getPid(), treatment.getDate(),
-                treatment.getBegin(), treatment.getEnd(), treatment.getDescription(),
-                treatment.getRemarks());
+        return String.format(
+                "INSERT INTO treatment (pid, treatment_date, begin, end, description, remarks) VALUES "
+                        + "(%d, '%s', '%s', '%s', '%s', '%s')",
+                treatment.getPid(), treatment.getDate(), treatment.getBegin(), treatment.getEnd(),
+                treatment.getDescription(), treatment.getRemarks());
     }
 
     @Override
@@ -35,8 +36,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         LocalDate date = DateConverter.convertStringToLocalDate(result.getString(3));
         LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
         LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
-        Treatment m = new Treatment(result.getLong(1), result.getLong(2),
-                date, begin, end, result.getString(6), result.getString(7));
+        Treatment m = new Treatment(result.getLong(1), result.getLong(2), date, begin, end,
+                result.getString(6), result.getString(7));
         return m;
     }
 
@@ -53,8 +54,8 @@ public class TreatmentDAO extends DAOimp<Treatment> {
             LocalDate date = DateConverter.convertStringToLocalDate(result.getString(3));
             LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
             LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
-            t = new Treatment(result.getLong(1), result.getLong(2),
-                    date, begin, end, result.getString(6), result.getString(7));
+            t = new Treatment(result.getLong(1), result.getLong(2), date, begin, end,
+                    result.getString(6), result.getString(7));
             list.add(t);
         }
         return list;
@@ -62,10 +63,11 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected String getUpdateStatementString(Treatment treatment) {
-        return String.format("UPDATE treatment SET pid = %d, treatment_date ='%s', begin = '%s', end = '%s'," +
-                "description = '%s', remarks = '%s' WHERE tid = %d", treatment.getPid(), treatment.getDate(),
-                treatment.getBegin(), treatment.getEnd(), treatment.getDescription(), treatment.getRemarks(),
-                treatment.getTid());
+        return String.format(
+                "UPDATE treatment SET pid = %d, treatment_date ='%s', begin = '%s', end = '%s',"
+                        + "description = '%s', remarks = '%s' WHERE tid = %d",
+                treatment.getPid(), treatment.getDate(), treatment.getBegin(), treatment.getEnd(),
+                treatment.getDescription(), treatment.getRemarks(), treatment.getTid());
     }
 
     @Override
@@ -82,7 +84,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return list;
     }
 
-    private String getReadAllTreatmentsOfOnePatientByPid(long pid){
+    private String getReadAllTreatmentsOfOnePatientByPid(long pid) {
         return String.format("SELECT * FROM treatment WHERE pid = %d", pid);
     }
 
@@ -90,4 +92,15 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         Statement st = conn.createStatement();
         st.executeUpdate(String.format("Delete FROM treatment WHERE pid= %d", key));
     }
+
+    public ArrayList<Treatment> getAllNoneArchivedTreatment() throws SQLException {
+        Statement st = conn.createStatement();
+        ResultSet set = st.executeQuery(getStatementAllNoneArchivedTreatment());
+        return getListFromResultSet(set);
+    }
+
+    private String getStatementAllNoneArchivedTreatment() {
+        return "SELECT * FROM treatment INNER JOIN Patient ON treatment.pid = Patient.pid WHERE Patient.dateOfArchive IS NULL";
+    }
+
 }
