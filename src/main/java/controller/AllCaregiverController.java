@@ -6,9 +6,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import model.Caregiver;
+
+import javax.swing.border.Border;
+import java.awt.*;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -157,22 +166,29 @@ public class AllCaregiverController {
     }
 
     /**
-     * handles an add-click-event. Creates A patient and calls the create method in the
+     * handles an add-click-event.
+     * Checks if no inputField is empty.
+     * Creates A patient and calls the create method in the
      * {@link CaregiverDAO}
      */
     @FXML
     public void handleAdd() {
-        String firstname = this.txfFirstname.getText();
-        String surname = this.txfSurname.getText();
-        String phoneNumber = this.txfTelephone.getText();
-        try {
-            Caregiver c = new Caregiver(firstname, surname, phoneNumber);
-            dao.create(c);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        removeHighlightsFromFields();
+        if(validateTextField(this.txfFirstname) && validateTextField(this.txfSurname) && validateTextField(this.txfTelephone)) {
+            String firstname = this.txfFirstname.getText();
+            String surname = this.txfSurname.getText();
+            String phoneNumber = this.txfTelephone.getText();
+            try {
+                Caregiver c = new Caregiver(firstname, surname, phoneNumber);
+                dao.create(c);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            readAllAndShowInTableView();
+            clearTextFields();
+        } else {
+            highlightEmptyField();
         }
-        readAllAndShowInTableView();
-        clearTextFields();
     }
 
     /**
@@ -182,5 +198,40 @@ public class AllCaregiverController {
         this.txfFirstname.clear();
         this.txfSurname.clear();
         this.txfTelephone.clear();
+    }
+
+    /**
+     * validates inputfields to not be empty
+     * @param input inputField to check
+     */
+    private boolean validateTextField(TextField input) {
+        if(input.getText().isEmpty()) {
+           return false;
+        }
+        return true;
+    }
+
+    /**
+     * add border to the empty fields, to show the missing inputs
+     */
+    private void highlightEmptyField(){
+        if (!validateTextField(this.txfFirstname)) {
+            this.txfFirstname.setStyle("-fx-border-color: red");
+        }
+        if (!validateTextField(this.txfSurname)) {
+            this.txfSurname.setStyle("-fx-border-color: red");
+        }
+        if (!validateTextField(this.txfTelephone)) {
+            this.txfTelephone.setStyle("-fx-border-color: red");
+        }
+    }
+
+    /**
+     * removes the highlighted border from the inputFields
+     */
+    private void removeHighlightsFromFields(){
+        this.txfFirstname.setStyle("-fx-border-color: none");
+        this.txfSurname.setStyle("-fx-border-color: none");
+        this.txfTelephone.setStyle("-fx-border-color: none");
     }
 }
