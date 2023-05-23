@@ -1,5 +1,6 @@
 package controller;
 
+import datastorage.ConnectionBuilder;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +10,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class MainWindowController {
 
@@ -16,17 +20,34 @@ public class MainWindowController {
     private BorderPane mainBorderPane;
 
     @FXML
-    private Button btnPatient;
+    private Button btnCaregiver;
 
     public void initialize() {
 
         Platform.runLater(() -> {
             // Zugriff auf die Stage
-            Stage stage = (Stage) btnPatient.getScene().getWindow();
+            Stage stage = (Stage) mainBorderPane.getScene().getWindow();
 
             // Ändern der Fenstergröße
             stage.setWidth(1000);
             stage.setHeight(1000);
+
+            // Plegermenue nur anzeigen wenn User ist Supervisor
+            try {
+                Connection connection = ConnectionBuilder.getConnection();
+                PreparedStatement statement = connection.prepareStatement("SELECT SUPER from USER WHERE CID = ?");
+                statement.setInt(1, LoginViewController.CID);
+                ResultSet resultSet = statement.executeQuery();
+
+                if(resultSet.next())
+                    if(resultSet.getInt("SUPER") > 0)
+                        return;
+
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+            btnCaregiver.setVisible(false);
+            btnCaregiver.setDisable(true);
         });
     }
 

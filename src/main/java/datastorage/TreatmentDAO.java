@@ -31,6 +31,11 @@ public class TreatmentDAO extends DAOimp<Treatment> {
     }
 
     @Override
+    protected String getReadByCIDStatementString(long key) {
+        return String.format("SELECT * FROM patient WHERE CID = %d", key);
+    }
+
+    @Override
     protected Treatment getInstanceFromResultSet(ResultSet result) throws SQLException {
         LocalDate date = DateConverter.convertStringToLocalDate(result.getString(3));
         LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));

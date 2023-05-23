@@ -22,6 +22,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 public class LoginViewController {
 
+    public static int CID;
+
     @FXML
     private TextField FUsername;
     @FXML
@@ -62,12 +64,13 @@ public class LoginViewController {
             buffer.append(String.format("%02x",b));
 
         Connection connection = ConnectionBuilder.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT PASSWORT from CAREGIVER WHERE USERNAME = ?");
+        PreparedStatement statement = connection.prepareStatement("SELECT CID,PASSWORT from USER WHERE USERNAME = ?");
         statement.setString(1,FUsername.getText());
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {
             if (buffer.toString().equals(resultSet.getString("PASSWORT"))) {
+                CID = resultSet.getInt("CID");
                 Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/MainWindowView.fxml")));
                 Scene scene = btnLogin.getScene();
                 scene.setRoot(root);

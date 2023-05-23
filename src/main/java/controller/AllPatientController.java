@@ -59,7 +59,8 @@ public class AllPatientController {
      * be displayed.
      */
     public void initialize() {
-        readAllAndShowInTableView();
+        //readAllAndShowInTableView();
+        readAssignedAndShowInTable();
 
         this.colID.setCellValueFactory(new PropertyValueFactory<Patient, Integer>("pid"));
 
@@ -163,6 +164,22 @@ public class AllPatientController {
         List<Patient> allPatients;
         try {
             allPatients = dao.readAll();
+            for (Patient p : allPatients) {
+                this.tableviewContent.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *
+     */
+    private void readAssignedAndShowInTable(){this.tableviewContent.clear();
+        this.dao = DAOFactory.getDAOFactory().createPatientDAO();
+        List<Patient> allPatients;
+        try {
+            allPatients = dao.readByID(LoginViewController.CID);
             for (Patient p : allPatients) {
                 this.tableviewContent.add(p);
             }
