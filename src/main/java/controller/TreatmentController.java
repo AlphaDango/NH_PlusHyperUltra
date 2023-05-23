@@ -69,7 +69,8 @@ public class TreatmentController {
         this.treatment.setDescription(txtDescription.getText());
         this.treatment.setRemarks(taRemarks.getText());
         doUpdate();
-        controller.readAllAndShowInTableView();
+        //controller.readAllAndShowInTableView();
+        controller.readByCIDAndShowInTableView();
         stage.close();
     }
 
