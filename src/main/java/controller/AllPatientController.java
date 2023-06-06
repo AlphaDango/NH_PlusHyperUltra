@@ -65,7 +65,8 @@ public class AllPatientController {
      * be displayed.
      */
     public void initialize() {
-        readAllAndShowInTableView();
+        //readAllAndShowInTableView();
+        readAssignedAndShowInTable();
 
         // this deletes the patient archive
         deleteAllPatientArchiveOlderThanTen();
@@ -190,6 +191,22 @@ public class AllPatientController {
     }
 
     /**
+     *
+     */
+    private void readAssignedAndShowInTable(){this.tableviewContent.clear();
+        this.dao = DAOFactory.getDAOFactory().createPatientDAO();
+        List<Patient> allPatients;
+        try {
+            allPatients = dao.readByID(LoginViewController.CID);
+            for (Patient p : allPatients) {
+                this.tableviewContent.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * handles a archive-click-event. Calls the update methods in the {@link PatientDAO} and Saves
      * {@link TreatmentDAO}
      */
@@ -206,7 +223,7 @@ public class AllPatientController {
     }
 
     /**
-     * handles a add-click-event. Creates a patient and calls the create method in the
+     * handles an add-click-event. Creates a patient and calls the create method in the
      * {@link PatientDAO}
      */
     @FXML

@@ -52,7 +52,8 @@ public class AllTreatmentController {
     private Main main;
 
     public void initialize() {
-        readAllAndShowInTableView();
+        //readAllAndShowInTableView();
+        readByCIDAndShowInTableView();
         comboBox.setItems(myComboBoxData);
         comboBox.getSelectionModel().select(0);
         this.main = main;
@@ -75,6 +76,21 @@ public class AllTreatmentController {
         List<Treatment> allTreatments;
         try {
             allTreatments = dao.getAllNoneArchivedTreatment();
+            for (Treatment treatment : allTreatments) {
+                this.tableviewContent.add(treatment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void readByCIDAndShowInTableView() {
+        this.tableviewContent.clear();
+        comboBox.getSelectionModel().select(0);
+        this.dao = DAOFactory.getDAOFactory().createTreatmentDAO();
+        List<Treatment> allTreatments;
+        try {
+            allTreatments = dao.readByID(LoginViewController.CID);
             for (Treatment treatment : allTreatments) {
                 this.tableviewContent.add(treatment);
             }
@@ -200,7 +216,7 @@ public class AllTreatmentController {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/TreatmentView.fxml"));
             AnchorPane pane = loader.load();
             Scene scene = new Scene(pane);
-            // da die primaryStage noch im Hintergrund bleiben soll
+            //da die primaryStage noch im Hintergrund bleiben soll
             Stage stage = new Stage();
             TreatmentController controller = loader.getController();
 

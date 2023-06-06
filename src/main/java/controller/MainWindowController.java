@@ -28,10 +28,11 @@ public class MainWindowController {
             // Zugriff auf die Stage
             Stage stage = (Stage) mainBorderPane.getScene().getWindow();
 
-            // Ändern der Fenstergröße
+            // Ändern der Fenstergröße und Position
             stage.setWidth(1000);
             stage.setHeight(1000);
             stage.setTitle("NHPlus");
+            stage.centerOnScreen();
 
             // Plegermenue nur anzeigen wenn User ist Supervisor
             try {
