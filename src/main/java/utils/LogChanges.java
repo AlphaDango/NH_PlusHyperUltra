@@ -23,7 +23,7 @@ public class LogChanges {
 
             // This block configure the logger with handler and formatter
             String currentDate = new SimpleDateFormat("dd-MM-yyyy hh-mm-ss").format(new Date());
-            fh = new FileHandler("./" + type + "-" + currentDate + ".log");
+            fh = new FileHandler("./" + type + ".log");
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
