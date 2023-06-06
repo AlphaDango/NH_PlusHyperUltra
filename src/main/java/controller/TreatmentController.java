@@ -17,6 +17,9 @@ import java.time.LocalDate;
 
 import static utils.LogChanges.LogChangesToFile;
 
+/**
+ * Controller class to handle the treatments in the treatment view.
+ */
 public class TreatmentController {
     @FXML
     private Label lblPatientName;
@@ -42,6 +45,12 @@ public class TreatmentController {
     private Patient patient;
     private Treatment treatment;
 
+    /**
+     * Initializes the controller.
+     * @param controller
+     * @param stage
+     * @param treatment
+     */
     public void initializeController(AllTreatmentController controller, Stage stage, Treatment treatment) {
         this.stage = stage;
         this.controller= controller;
@@ -55,6 +64,9 @@ public class TreatmentController {
         }
     }
 
+    /**
+     * Shows the data of a treatment.
+     */
     private void showData(){
         this.lblPatientName.setText(patient.getSurname()+", "+patient.getFirstName());
         this.lblCarelevel.setText(patient.getCareLevel());
@@ -67,6 +79,9 @@ public class TreatmentController {
     }
 
     @FXML
+    /**
+     * Changes the data of a treatment.
+     */
     public void handleChange(){
         this.treatment.setDate(this.datepicker.getValue().toString());
         this.treatment.setBegin(txtBegin.getText());
@@ -95,6 +110,9 @@ public class TreatmentController {
     }
 
     @FXML
+    /**
+     * Closes the Window.
+     */
     public void handleCancel(){
         stage.close();
     }

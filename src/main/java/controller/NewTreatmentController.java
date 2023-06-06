@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Controller class that handles new treatments.
+ */
 public class NewTreatmentController {
     @FXML
     private Label lblSurname;
@@ -35,6 +38,12 @@ public class NewTreatmentController {
     private Patient patient;
     private Stage stage;
 
+    /**
+     * Initializes the controller.
+     * @param controller
+     * @param stage
+     * @param patient
+     */
     public void initialize(AllTreatmentController controller, Stage stage, Patient patient) {
         this.controller= controller;
         this.patient = patient;
@@ -42,12 +51,18 @@ public class NewTreatmentController {
         showPatientData();
     }
 
+    /**
+     * Sets the label text values to the patients credentials.
+     */
     private void showPatientData(){
         this.lblFirstname.setText(patient.getFirstName());
         this.lblSurname.setText(patient.getSurname());
     }
 
     @FXML
+    /**
+     * Handles the creation of a new  treatment.
+     */
     public void handleAdd(){
         LocalDate date = this.datepicker.getValue();
         String s_begin = txtBegin.getText();
@@ -63,6 +78,10 @@ public class NewTreatmentController {
         stage.close();
     }
 
+    /**
+     * Creates a new treatment in the database.
+     * @param treatment
+     */
     private void createTreatment(Treatment treatment) {
         TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
         try {
@@ -73,6 +92,9 @@ public class NewTreatmentController {
     }
 
     @FXML
+    /**
+     * Closes the Window.
+     */
     public void handleCancel(){
         stage.close();
     }

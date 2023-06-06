@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import utils.StringUtil;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -22,6 +23,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * @author Oliver Neumann
  * Controller class for the LoginView.fxml
+ * It holds the CID of the current Caregive that is currently active in a static variable.
  */
 public class LoginViewController {
 
@@ -37,6 +39,9 @@ public class LoginViewController {
     @FXML
     private BorderPane mainBorderPane;
 
+    /**
+     * Initializes the LoginViewController class by setting its dimensions and centering the window.
+     */
     public void initialize() {
         Platform.runLater(() -> {
             Stage stage = (Stage) mainBorderPane.getScene().getWindow();
@@ -69,19 +74,7 @@ public class LoginViewController {
      * @throws SQLException Might get thrown if no connection to the database could be opened.
      */
     public void handleButtonAction() throws SQLException, IOException {
-        MessageDigest md = null;
-        try{
-            md = MessageDigest.getInstance("SHA-256");
-        }catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            assert false: "MessageDigest couldn't initialise";
-        }
-
-        byte[] hashData = md.digest(FPasswort.getText().getBytes(UTF_8));
-        StringBuilder buffer = new StringBuilder();
-
-        for (byte b : hashData)
-            buffer.append(String.format("%02x",b));
+       String hashedPassword = StringUtil.StringToSHA256(FPasswort.getText());
 
         Connection connection = ConnectionBuilder.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT CID,PASSWORT from USER WHERE USERNAME = ?");
@@ -89,7 +82,7 @@ public class LoginViewController {
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {
-            if (buffer.toString().equals(resultSet.getString("PASSWORT"))) {
+            if (hashedPassword.equals(resultSet.getString("PASSWORT"))) {
                 CID = resultSet.getInt("CID");
                 Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/MainWindowView.fxml")));
                 Scene scene = btnLogin.getScene();

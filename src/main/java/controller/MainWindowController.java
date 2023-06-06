@@ -27,6 +27,9 @@ public class MainWindowController {
     @FXML
     private Button btnCaregiver;
 
+    /**
+     * Initialization of the mainWindow. Sets the dimensions and centers the Window. Also sets the close event to a Logout or Exit Promt.
+     */
     public void initialize() {
         Platform.runLater(() -> {
             // Zugriff auf die Stage
@@ -112,6 +115,9 @@ public class MainWindowController {
 
 
     @FXML
+    /**
+     * Opens the usercredentials menu.
+     */
     private void handleShowAccount(ActionEvent e) {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/AccountView.fxml"));
         try {
@@ -123,6 +129,9 @@ public class MainWindowController {
     }
 
     @FXML
+    /**
+     * Opens the patient overview.
+     */
     private void handleShowAllPatient(ActionEvent e) {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/AllPatientView.fxml"));
         try {
@@ -134,6 +143,9 @@ public class MainWindowController {
     }
 
     @FXML
+    /**
+     * Opens the treatments overview.
+     */
     private void handleShowAllTreatments(ActionEvent e) {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/AllTreatmentView.fxml"));
         try {
@@ -145,6 +157,9 @@ public class MainWindowController {
     }
 
     @FXML
+    /**
+     * Opens the Caregiver interface which is only accessible by supervisors.
+     */
     private void handleShowAllCaregiver(ActionEvent e) {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/AllCaregiverView.fxml"));
         try {

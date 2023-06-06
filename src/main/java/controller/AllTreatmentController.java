@@ -93,7 +93,7 @@ public class AllTreatmentController {
     }
 
     /**
-     * Loads and displays
+     * Loads and displays all treatments in relation to patients that a assigned to the logged in caregiver
      */
     public void readByCIDAndShowInTableView() {
         comboBox.getSelectionModel().select(0);
@@ -110,6 +110,9 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * Fills the combobox with selectable patients.
+     */
     private void createComboBoxData() {
         PatientDAO dao = DAOFactory.getDAOFactory().createPatientDAO();
         try {
@@ -125,6 +128,9 @@ public class AllTreatmentController {
 
 
     @FXML
+    /**
+     * Loads treatments of selected patient.
+     */
     public void handleComboBox() {
         String p = this.comboBox.getSelectionModel().getSelectedItem();
         this.tableviewContent.clear();
@@ -163,6 +169,9 @@ public class AllTreatmentController {
     }
 
     @FXML
+    /**
+     * Deletes selected treatment
+     */
     public void handleDelete() {
         int index = this.tableView.getSelectionModel().getSelectedIndex();
         Treatment t = this.tableviewContent.remove(index);
@@ -175,6 +184,9 @@ public class AllTreatmentController {
     }
 
     @FXML
+    /**
+     * Adds a new treatment to the table based on userinput.
+     */
     public void handleNewTreatment() {
         try {
             String p = this.comboBox.getSelectionModel().getSelectedItem();
@@ -190,6 +202,9 @@ public class AllTreatmentController {
     }
 
     @FXML
+    /**
+     * Opens the treatment window of the treatment that is clicked on.
+     */
     public void handleMouseClick() {
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2
@@ -202,6 +217,10 @@ public class AllTreatmentController {
         });
     }
 
+    /**
+     * Creates the Treatment Window.
+     * @param patient
+     */
     public void newTreatmentWindow(Patient patient) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/NewTreatmentView.fxml"));
@@ -222,6 +241,10 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * Opens a treatment window to edit a treatment.
+     * @param treatment
+     */
     public void treatmentWindow(Treatment treatment) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/TreatmentView.fxml"));

@@ -4,6 +4,9 @@ import utils.DateConverter;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Treatmen Model.
+ */
 public class Treatment {
     private long tid;
     private long pid;

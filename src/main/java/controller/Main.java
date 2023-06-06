@@ -12,6 +12,9 @@ import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
+/**
+ * Main Class of this Application
+ */
 public class Main extends Application {
 
     private Stage primaryStage;
@@ -22,6 +25,9 @@ public class Main extends Application {
         mainWindow();
     }
 
+    /**
+     * Creates the Windows of this application
+     */
     public void mainWindow() {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/LoginView.fxml"));//("/MainWindowView.fxml"));
@@ -33,20 +39,23 @@ public class Main extends Application {
             this.primaryStage.setResizable(false);
             this.primaryStage.show();
 
-            /*this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent e) {
                     ConnectionBuilder.closeConnection();
                     Platform.exit();
                     System.exit(0);
                 }
-            });*/
+            });
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
+    /**
+     * The entrypoint of the application which launches the JavaFX Applications with the given args.
+     * @param args Starparameters given over the CLI.
+     */
     public static void main(String[] args) {
         launch(args);
     }
