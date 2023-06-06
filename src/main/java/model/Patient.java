@@ -24,7 +24,6 @@ public class Patient extends Person {
      * @param dateOfBirth
      * @param careLevel
      * @param roomnumber
-     * @param dateOfArchive
      */
     public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel,
             String roomnumber) {

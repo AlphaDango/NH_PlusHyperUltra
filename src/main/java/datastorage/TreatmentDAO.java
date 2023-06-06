@@ -33,7 +33,7 @@ public class TreatmentDAO extends DAOimp<Treatment> {
 
     @Override
     protected String getReadByCIDStatementString(long key) {
-        return String.format("SELECT * FROM Treatment WHERE PID IN (SELECT PID FROM Patient WHERE CID = %d AND DATEOFARCHIVE IS NULL)" ,key);
+        return String.format("SELECT * FROM Treatment WHERE PID IN (SELECT PID FROM Patient WHERE CID = %d AND DATEOFARCHIVE IS NULL) " ,key);
     }
 
     @Override
