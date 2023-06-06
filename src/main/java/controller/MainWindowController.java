@@ -3,11 +3,16 @@ package controller;
 import datastorage.ConnectionBuilder;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -24,9 +29,66 @@ public class MainWindowController {
 
     public void initialize() {
 
+
+
+
+
         Platform.runLater(() -> {
             // Zugriff auf die Stage
             Stage stage = (Stage) mainBorderPane.getScene().getWindow();
+
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    event.consume(); // Verhindert, dass das Fenster automatisch geschlossen wird
+
+                    // Erzeugen einer Bestätigungsdialogbox
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Abfrage");
+                    alert.setHeaderText("Abmelden oder Beenden?");
+                    alert.setContentText("Möchten Sie sich abmelden oder das Programm beenden?");
+
+                    // Hinzufügen von Abmelde- und Beenden-Buttons zur Dialogbox
+                    ButtonType logoutButton = new ButtonType("Abmelden");
+                    ButtonType exitButton = new ButtonType("Beenden");
+
+                    alert.getButtonTypes().setAll(logoutButton, exitButton, ButtonType.CANCEL);
+
+                    // Anzeigen der Dialogbox und Verarbeiten der Benutzeraktion
+                    alert.showAndWait().ifPresent(buttonType -> {
+                        if (buttonType == logoutButton) {
+                            LoginViewController.CID = -1;
+                            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/LoginView.fxml"));//("/MainWindowView.fxml"));
+                            BorderPane pane = null;
+                            try {
+                                pane = loader.load();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                            Scene scene = new Scene(pane);
+                            stage.setTitle("NHPlus");
+                            stage.setScene(scene);
+                            stage.setResizable(false);
+                            stage.show();
+
+                            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                                @Override
+                                public void handle(WindowEvent e) {
+                                    ConnectionBuilder.closeConnection();
+                                    Platform.exit();
+                                    System.exit(0);
+                                }
+                            });
+                        } else if (buttonType == exitButton) {
+                            ConnectionBuilder.closeConnection();
+                            Platform.exit();
+                            System.exit(0);
+                        }
+                    });
+                }
+            });
+
 
             // Ändern der Fenstergröße und Position
             stage.setWidth(1000);
@@ -52,6 +114,7 @@ public class MainWindowController {
             btnCaregiver.setDisable(true);
         });
     }
+
 
     @FXML
     private void handleShowAllPatient(ActionEvent e) {

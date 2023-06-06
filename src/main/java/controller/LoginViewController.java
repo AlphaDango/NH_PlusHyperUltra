@@ -41,6 +41,9 @@ public class LoginViewController {
         Platform.runLater(() -> {
             Stage stage = (Stage) mainBorderPane.getScene().getWindow();
 
+            stage.setWidth(300);
+            stage.setHeight(200);
+            stage.centerOnScreen();
             stage.setTitle("NHPlus Login");
         });
     }

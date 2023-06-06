@@ -33,14 +33,14 @@ public class Main extends Application {
             this.primaryStage.setResizable(false);
             this.primaryStage.show();
 
-            this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            /*this.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent e) {
                     ConnectionBuilder.closeConnection();
                     Platform.exit();
                     System.exit(0);
                 }
-            });
+            });*/
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
