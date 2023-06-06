@@ -1,10 +1,12 @@
 package datastorage;
 
 import model.Caregiver;
+import model.Patient;
 import utils.DateConverter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -42,12 +44,12 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
      */
     @Override
     protected String getReadByIDStatementString(long key) {
-        return String.format("SELECT * FROM caregiver WHERE cid = %d", key);
+        return String.format("SELECT * FROM caregiver WHERE cid = %d AND DATEOFARCHIVE = NULL", key);
     }
 
     @Override
     protected String getReadByCIDStatementString(long key) {
-        return String.format("SELECT * FROM patient WHERE CID = %d", key);
+        return String.format("SELECT * FROM patient WHERE CID = %d AND DATEOFARCHIVE = NULL", key);
     }
 
     /**
@@ -60,7 +62,8 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
     protected Caregiver getInstanceFromResultSet(ResultSet result) throws SQLException {
         Caregiver c = null;
         //LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
-        c = new Caregiver(result.getString(1), result.getString(2), result.getString(3), "Pfleger");
+        LocalDate dateOfArchive = DateConverter.convertStringToLocalDate(result.getString(7));
+        c = new Caregiver(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5), dateOfArchive);
         return c;
     }
 
@@ -86,7 +89,8 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
         Caregiver c = null;
         while (result.next()) {
             //LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
-            c = new Caregiver(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), "Pfleger");
+            LocalDate dateOfArchive = DateConverter.convertStringToLocalDate(result.getString(6));
+            c = new Caregiver(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5), dateOfArchive);
             list.add(c);
         }
         return list;
@@ -100,9 +104,13 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
      */
     @Override
     protected String getUpdateStatementString(Caregiver caregiver) {
+        String dateOfArchive =
+                caregiver.getDateOfArchive() != null ? "'" + caregiver.getDateOfArchive() + "'"
+                        : "NULL";
+
         return String.format(
-                "UPDATE caregiver SET firstname = '%s', surname = '%s', phoneNumber = '%s', role = '%s', WHERE cid = %d",
-                caregiver.getFirstName(), caregiver.getSurname(), caregiver.getPhoneNumber(), caregiver.getRole(), caregiver.getCid());
+                "UPDATE caregiver SET firstname = '%s', surname = '%s', phoneNumber = '%s', role = '%s',dateOfArchive = %s  WHERE cid = %d",
+                caregiver.getFirstName(), caregiver.getSurname(), caregiver.getPhoneNumber(), caregiver.getRole(), dateOfArchive, caregiver.getCid());
     }
 
     /**
@@ -114,6 +122,46 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
     @Override
     protected String getDeleteStatementString(long key) {
         return String.format("Delete FROM caregiver WHERE cid=%d", key);
+    }
+
+    /**
+     *
+     *
+     * @return list of All caregivers that are not archived
+     */
+    public ArrayList<Caregiver> getAllNoneArchivedCaregivers() throws SQLException {
+        Statement st = conn.createStatement();
+        return getListFromResultSet(st.executeQuery(getStatementAllNoneArchivedCaregivers()));
+    }
+
+    /**
+     *
+     *
+     * @return <code>string statement</code> to query all the caregivers if there is no date for
+     *         archiving
+     */
+    private String getStatementAllNoneArchivedCaregivers() {
+        return "SELECT * FROM Caregiver WHERE DATEOFARCHIVE IS NULL";
+    }
+
+    /**
+     *
+     *
+     * @return list of All caregivers that are archived
+     */
+    public ArrayList<Caregiver> getAllArchivedCaregivers() throws SQLException {
+        Statement st = conn.createStatement();
+        return getListFromResultSet(st.executeQuery(getStatementAllArchivedCaregivers()));
+    }
+
+    /**
+     *
+     *
+     * @return <code>string statement</code> to query all the Caregivers if there is a date for
+     *         archiving
+     */
+    private String getStatementAllArchivedCaregivers() {
+        return "SELECT * FROM Caregiver WHERE DATEOFARCHIVE IS NOT NULL";
     }
 
 }

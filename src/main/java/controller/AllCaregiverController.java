@@ -12,8 +12,10 @@ import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.Caregiver;
+import utils.DateConverter;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -41,7 +43,7 @@ public class AllCaregiverController {
     private TableColumn<Caregiver, String> colRole;
 
     @FXML
-    Button btnDelete;
+    Button btnArchive;
 
     @FXML
     Button btnAdd;
@@ -70,6 +72,9 @@ public class AllCaregiverController {
     public void initialize() {
         readAllAndShowInTableView();
 
+        // this deletes the patient archive
+        deleteAllPatientArchiveOlderThanTen();
+
         this.colID.setCellValueFactory(new PropertyValueFactory<Caregiver, Integer>("cid"));
 
         //CellValueFactory zum Anzeigen der Daten in der TableView
@@ -86,6 +91,12 @@ public class AllCaregiverController {
 
         this.colRole.setCellValueFactory(new PropertyValueFactory<Caregiver, String>("role"));
         this.colRole.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        // for Admin role this data can be shown if the feature is required
+        // this.colArchivedDatum
+        // .setCellValueFactory(new PropertyValueFactory<Patient, String>("dateOfArchived"));
+        // this.colArchivedDatum.setCellFactory(TextFieldTableCell.forTableColumn());
+        //
 
         this.tableView.setItems(this.tableViewContent);
     }
@@ -155,7 +166,7 @@ public class AllCaregiverController {
         this.dao = DAOFactory.getDAOFactory().createCaregiverDAO();
         List<Caregiver> allCaregivers;
         try {
-            allCaregivers = dao.readAll();
+            allCaregivers = dao.getAllNoneArchivedCaregivers();
             for (   Caregiver c : allCaregivers) {
                 this.tableViewContent.add(c);
             }
@@ -165,15 +176,16 @@ public class AllCaregiverController {
     }
 
     /**
-     * handles a delete-click-event. Calls the delete methods in the
+     * handles an archive-click-event. Calls the update methods in the
      * {@link CaregiverDAO}
      */
 
     @FXML
-    public void handleDeleteRow() {
+    public void handleArchiveRowSperren() {
         Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         try {
-            dao.deleteById(selectedItem.getCid());
+            selectedItem.setDateOfArchive(LocalDate.now());
+            dao.update(selectedItem);
             this.tableView.getItems().remove(selectedItem);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -249,5 +261,41 @@ public class AllCaregiverController {
         this.txfFirstname.setStyle("-fx-border-color: none");
         this.txfSurname.setStyle("-fx-border-color: none");
         this.txfTelephone.setStyle("-fx-border-color: none");
+    }
+
+
+    /**
+     * for better design it is recommended to seperate business logic from controller however we do
+     * not have service layer and therefore it is written here
+     *
+     * the function deletes the archive if it is older than 10 years
+     *
+     *
+     */
+    private void deleteAllPatientArchiveOlderThanTen() {
+        dao = DAOFactory.getDAOFactory().createCaregiverDAO();
+        try {
+            List<Caregiver> allCaregiver = dao.getAllArchivedCaregivers().stream()
+                    .filter(caregiver -> isMoreThanTenYearsAgo(caregiver.getDateOfArchive())).toList();
+            allCaregiver.stream().forEach(pToDel -> {
+                try {
+                    long id = pToDel.getCid();
+                    dao.deleteById(id);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private boolean isMoreThanTenYearsAgo(String dateArchive) {
+        LocalDate date = DateConverter.convertStringToLocalDate(dateArchive);
+        LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
+        return date.isBefore(tenYearsAgo);
     }
 }
