@@ -161,6 +161,10 @@ TF_2: Datenbank überprüfen
 -erwartetes Ergebnis:Es befindet sich nirgendwo ein Feld “Vermögensstand”.
 - **Ergebnis:** Validierung kann nur über das DB-Script vorgenommen werden. Das Feld "Vermögensstand" wurde vollständig aus der Datenbank entfernt.
 
+## Zusätzliche Inforamtionen
+Benutzer und Passwörter werden beim hinzufügen einer neuen Pflegekraft automatisch generiert.
+Jeder Benutzer kann seinen Usernamen, Telefonnummer sowie Passwort im Benutzermenü oben links ändern.
+
 ## Benutzername und Passwort für das Login
 ### Login als Supervisor: 
 - Benutzername: Dango
