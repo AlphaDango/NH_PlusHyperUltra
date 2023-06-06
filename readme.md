@@ -67,7 +67,7 @@ TF_1: Alle Pflegekräfte anzeigen
 -Vorbedingung: Der Nutzer/ die Nutzerin hat sich angemeldet und in der Navigationsleiste “Pflegekräfte” ausgewählt
 -auszuführende Testschritte: 
 1. Einloggen als Bereichsleiter/Supervisor
-2. Bereich Pflegekräfte auswählen  
+2. Bereich Pflegekräfte auswählen  <br>
 -erwartetes Ergebnis: Es werden alle Pflegekräfte,die in der Datenbankgespeichert sind, in einer tabellarischen Ansicht mit Vor- und Nachnamen und Telefonnummer und ihrer Rolle angezeigt.
 - **Ergebnis:** Pflegekräfte werden Bereichsleitern mit allen relevanten Daten angezeigt.
 
@@ -75,7 +75,7 @@ TF_2: neue Pflegekraft hinzufügen
 -Vorbedingung: Der Nutzer/ die Nutzerin hat sichangemeldet und in derNavigationsleiste “Pflegekräfte” ausgewählt
 -auszuführende Testschritte:
 1.Nutzer/in hat alle vorgesehenen Felder (Vor- und Nachname,Telefonnummer, Rolle) ausgefüllt
-2.Nutzer/in hat den Button “hinzufügen” gedrückt
+2.Nutzer/in hat den Button “hinzufügen” gedrückt <br>
 -erwartetes Ergebnis: Der Tabelle wird die Pflegekraft mit ihren Daten und einer automatisch erstellten ID hinzugefügt und auch in der Datenbank gespeichert.
 - **Ergebnis:** Bei Eingabe aller erforderlichen Daten wird ein neuer Pfleger mit einer automatisch erstellten ID hinzugefügt und in der Datenbank gespeichert. Eingaben werden validiert und erst bei korrekter Belegung aller Felder wird eine neue Pflegekraft hinzugefügt. Beim Hinzufügen eines neuen Pflegers wird ebenfalls ein neuer User / Passwort für den Login und ihre Rolle generiert.
 
@@ -84,7 +84,7 @@ TF_3: Pflegekraft-Daten ändern
 -auszuführende Testschritte:
 1.Nutzer/in wählt mit Doppelklick den zu ändernden Wert einer Pflegekraftaus
 2.Nutzer/in ändert den Wert
-3.Nutzer/in beendet die Eingabe mit der Entertaste  
+3.Nutzer/in beendet die Eingabe mit der Entertaste  <br>
 -erwartetes Ergebnis: Der geänderte Wert wird in der Tabelle angezeigt und zusätzlich in der Datenbank gespeichert
 - **Ergebnis:** Der geänderte Wert wird in der Tabelle angezeigt und in der Datenbank gespeichert
 
@@ -92,9 +92,63 @@ TF_4: Pflegekraft-Daten löschen (sperren)
 -Vorbedingung: Der Nutzer/ die Nutzerin hat auf derNavigationsleiste“Pflegekräfte” ausgewählt
 -auszuführende Testschritte:
 1.Nutzer/in wählt die zu löschenden (sperrenden) Personen aus
-2.Nutzer/in drückt den “Löschen/Archivieren” (Sperren) Button  
+2.Nutzer/in drückt den “Löschen/Archivieren” (Sperren) Button  <br>
 -erwartetes Ergebnis: Die gelöschte bzw. gesperrte Pflegekraft wird nicht mehrin der Tabelle angezeigt, die Daten bleiben aber in der Datenbank (Speicherfrist), bis die Frist abgelaufen ist.
 - **Ergebnis:** Die gelöschte Pflegekraft wird nicht mehr in der Tabelle angezeigt und mit einem DATEOFARCHIVE in der Datenbank gespeichert. Nach ablauf der Speicherfrist von 10 Jahren, wird der Wert beim Aufruf der gesamten Daten entfernt.
+
+## Speicherfrist
+
+### Testfälle
+
+TF_1: Patient archivieren
+-Vorbedingung: Der User hat einen Patienten ausgewählt.
+-auszuführende Testschritte: Den Button zum Archivierenbetätigen
+-erwartetes Ergebnis: Die View aktualisiert sich und der betroffene Patient wird nicht mehr angezeigt.
+- **Ergebnis:** Wenn der Button zum archivieren gedrückt wird, wird die aktuelle Zeit dem Datensatz als Timestamp hinzugefügt und der Datensatz verschwindet aus der sichtbaren Tabelle.
+
+TF_2: Datenbank enthält Datensatz
+-Vorbedingung: Der User hat Zugriff auf Datenbank.
+-auszuführende Testschritte: Datenbank nach archiviertem Datensatz durchsuchen.
+-erwartetes Ergebnis: Datensatz ist noch vorhanden und besitzt ein“gelöscht”-Flag und/oder einen Timestamp
+- **Ergebnis:** Der Datensatz ist in der Datenbank mit dem Timestamp vorhanden. Eine Einsicht der Daten ist nur über das Script möglich.
+
+TF_3: Automatische Löschung
+-Vorbedingung: Der User hat Zugriff auf Datenbank.
+-auszuführende Testschritte: Timestamp wird auf “vor9 Jahren und 364 Tagen,23 Stundne und 55 Minuten” gesetzt. Nach 5 Minuten wird die Datenbank nachdem zuvor archivierten Datensatz durchsucht.-erwartetes Ergebnis: Datensatz ist nicht mehr vorhanden.
+- **Ergebnis:** Die Daten werden automatisch gelöscht.
+
+## Login
+Beim Login der Benutzer, zur Verwendung der Anwendung, wird zwischen Pfleger und Bereichsleiter/Supervisor unterschieden
+
+### Testfälle
+
+TF_1: Login mit falschen Benutzerdaten
+-Vorbedingung: Das Programm muss gestartet werden
+-Auszuführende Testschritte: Das Einloggen mit falschen Daten
+-Erwartetes Ergebnis: Fehlermeldung, den Zugriff auf das Programm verweigern 
+- **Ergebnis:** Der Zugriff auf die Anwendung wird verweigert und es erscheint eine Fehlermeldung
+
+TF_2: Login mit richtigen Benutzerdaten
+-Vorbedingung: Das Programm muss gestartet werden
+-Auszuführende Testschritte: Das Einloggen mit validen Daten
+-Erwartetes Ergebnis: Erfolgreiche Anmeldung
+- **Ergebnis:** Der angemeldete Benutzer wird auf das Hauptformular weitergeleitet.
+
+TF_3: Benutzerrollen-Test
+-Vorbedingung: Es muss eine Benutzer eingeloggt sein
+-Auszuführende Testschritte: Sichtung der Tabellen
+-Erwartetes Ergebnis: Nur für den Benutzer relevante Daten anzeigen
+- **Ergebnis:** Jeder Nutzer erhält anhand seiner Rolle und zugewiesenen Patienten zugriff auf diese Werte. 
+Bereichsleiter erhalten Zugriff auf die Verwaltung von Pflegekräften. Pfleger können nur die ihnen zugewiesenen Patientendaten und Behandlungen einsehen.
+
+TF_4: Löschung und Bearbeitung von Daten als Administrator
+-Vorbedingung: Der Benutzer muss als Administrator eingeloggt sein
+-Auszuführende Testschritte: “Löschung” und Bearbeitung von Daten
+-Erwartetes Ergebnis: Erfolgreiche Löschung & Bearbeitung von Daten
+- **Ergebnis:** Daten können von allen Personen bearbeitet werden.
+
+
+
 
 
 ## Benutzername und Passwort für das Login
