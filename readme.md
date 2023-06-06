@@ -145,10 +145,7 @@ TF_4: Löschung und Bearbeitung von Daten als Administrator
 -Vorbedingung: Der Benutzer muss als Administrator eingeloggt sein
 -Auszuführende Testschritte: “Löschung” und Bearbeitung von Daten
 -Erwartetes Ergebnis: Erfolgreiche Löschung & Bearbeitung von Daten
-- **Ergebnis:** Daten können von allen Personen bearbeitet werden.
-
-
-
+- **Ergebnis:** Pflegerdaten können nur von Bereichsleitern bearbeitet werden. Patienten und Behandlungsdaten können auch von Pflegern bearbeitet werden, solange diese ihnen zugeordnet sind.
 
 
 ## Benutzername und Passwort für das Login
