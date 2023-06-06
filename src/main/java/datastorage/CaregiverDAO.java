@@ -44,12 +44,12 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
      */
     @Override
     protected String getReadByIDStatementString(long key) {
-        return String.format("SELECT * FROM caregiver WHERE cid = %d AND DATEOFARCHIVE = NULL", key);
+        return String.format("SELECT * FROM caregiver WHERE cid = %d AND DATEOFARCHIVE IS NULL", key);
     }
 
     @Override
     protected String getReadByCIDStatementString(long key) {
-        return String.format("SELECT * FROM patient WHERE CID = %d AND DATEOFARCHIVE = NULL", key);
+        return String.format("SELECT * FROM caregiver WHERE CID = %d AND DATEOFARCHIVE IS NULL", key);
     }
 
     /**

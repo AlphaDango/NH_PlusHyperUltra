@@ -49,12 +49,12 @@ public class PatientDAO extends DAOimp<Patient> {
      */
     @Override
     protected String getReadByIDStatementString(long key) {
-        return String.format("SELECT * FROM patient WHERE pid = %d", key);
+        return String.format("SELECT * FROM patient WHERE pid = %d DATEOFARCHIVE IS NULL", key);
     }
 
     @Override
     protected String getReadByCIDStatementString(long key) {
-        return String.format("SELECT * FROM patient WHERE CID = %d AND DATEOFARCHIVE = NULL", key);
+        return String.format("SELECT * FROM patient WHERE CID = %d AND DATEOFARCHIVE IS NULL ", key);
     }
 
     /**
