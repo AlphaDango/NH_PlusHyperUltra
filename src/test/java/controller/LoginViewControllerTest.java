@@ -12,9 +12,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.junit.After;
 import org.junit.Test;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit.ApplicationTest;
+import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.matcher.base.WindowMatchers;
 
 public class LoginViewControllerTest extends ApplicationTest{
@@ -29,9 +31,9 @@ public class LoginViewControllerTest extends ApplicationTest{
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/LoginView.fxml"));//("/MainWindowView.fxml"));
         BorderPane pane = loader.load();
         Scene scene = new Scene(pane);
-        stage.setTitle("NHPlus");
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.setTitle("NHPlus Login");
         stage.show();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
@@ -44,10 +46,20 @@ public class LoginViewControllerTest extends ApplicationTest{
     }
 
     @Test
+    public void handleInvalidLogin(){
+        clickOn("#FUsername").write("Dango");
+        clickOn("#FPasswort").write("invalid");
+        clickOn("#btnLogin");
+        FxAssert.verifyThat("OK", NodeMatchers.isVisible());
+        clickOn("#loginFailOk");
+    }
+
+    @Test
     public void handleLogin(){
         clickOn("#FUsername").write("Dango");
         clickOn("#FPasswort").write("test");
         clickOn("#btnLogin");
         FxAssert.verifyThat(window("NHPlus"), WindowMatchers.isFocused());
     }
+
 }

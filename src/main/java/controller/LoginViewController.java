@@ -1,12 +1,15 @@
 package controller;
 
 import datastorage.ConnectionBuilder;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -31,6 +34,18 @@ public class LoginViewController {
     @FXML
     private Button btnLogin;
 
+    @FXML
+    private BorderPane mainBorderPane;
+
+    public void initialize() {
+        Platform.runLater(() -> {
+            Stage stage = (Stage) mainBorderPane.getScene().getWindow();
+
+            stage.setTitle("NHPlus Login");
+        });
+    }
+
+
     /**
      * Shows a dialog Window with an errormessage, that the login failed due to an false username or password.
      */
@@ -39,6 +54,8 @@ public class LoginViewController {
         alert.setTitle("Anmeldung Fehlgeschlagen");
         alert.setHeaderText(null);
         alert.setContentText("Benutzername oder Passwort ist falsch.");
+        Button errorButton = (Button) alert.getDialogPane().lookupButton(ButtonType.OK);
+        errorButton.setId("loginFailOk");
         alert.showAndWait();
     }
 

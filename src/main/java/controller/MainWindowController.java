@@ -31,6 +31,7 @@ public class MainWindowController {
             // Ändern der Fenstergröße
             stage.setWidth(1000);
             stage.setHeight(1000);
+            stage.setTitle("NHPlus");
 
             // Plegermenue nur anzeigen wenn User ist Supervisor
             try {
