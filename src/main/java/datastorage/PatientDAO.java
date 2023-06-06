@@ -54,7 +54,7 @@ public class PatientDAO extends DAOimp<Patient> {
 
     @Override
     protected String getReadByCIDStatementString(long key) {
-        return String.format("SELECT * FROM patient WHERE CID = %d", key);
+        return String.format("SELECT * FROM patient WHERE CID = %d AND DATEOFARCHIVE IS NULL", key);
     }
 
     /**
