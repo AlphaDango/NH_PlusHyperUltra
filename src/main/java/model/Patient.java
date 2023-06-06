@@ -80,7 +80,6 @@ public class Patient extends Person {
      */
     public void setDateOfArchive(LocalDate timeOfArchive) {
         this.dateOfArchive = timeOfArchive;
-        // System.out.println(dateOfArchive);
     }
 
     /**

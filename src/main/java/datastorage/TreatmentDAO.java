@@ -99,6 +99,12 @@ public class TreatmentDAO extends DAOimp<Treatment> {
         return getListFromResultSet(set);
     }
 
+    /**
+     * 
+     * 
+     * @return <code>string</code> statement for sql database to join patient table with treatment
+     *         table if patient has no date of archiving
+     */
     private String getStatementAllNoneArchivedTreatment() {
         return "SELECT * FROM treatment INNER JOIN Patient ON treatment.pid = Patient.pid WHERE Patient.dateOfArchive IS NULL";
     }

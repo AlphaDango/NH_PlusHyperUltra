@@ -137,6 +137,12 @@ public class PatientDAO extends DAOimp<Patient> {
         return getListFromResultSet(st.executeQuery(getStatementAllNoneArchivedPatients()));
     }
 
+    /**
+     * 
+     * 
+     * @return <code>string statement</code> to query all the patients if there is no date for
+     *         archiving
+     */
     private String getStatementAllNoneArchivedPatients() {
         return "SELECT * FROM Patient WHERE DATEOFARCHIVE IS NULL";
     }
@@ -151,6 +157,12 @@ public class PatientDAO extends DAOimp<Patient> {
         return getListFromResultSet(st.executeQuery(getStatementAllArchivedPatients()));
     }
 
+    /**
+     * 
+     * 
+     * @return <code>string statement</code> to query all the patients if there is a date for
+     *         archiving
+     */
     private String getStatementAllArchivedPatients() {
         return "SELECT * FROM Patient WHERE DATEOFARCHIVE IS NOT NULL";
     }

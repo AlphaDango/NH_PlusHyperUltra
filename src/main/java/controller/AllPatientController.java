@@ -240,11 +240,8 @@ public class AllPatientController {
 
     /**
      * for better design it is recommended to seperate business logic from controller however we do
-     * not have service layer and therefore it is written here
-     * 
-     * the function deletes the archive if it is older than 10 years
-     * 
-     * 
+     * not have service layer and therefore it is written here the function deletes the archive if
+     * it is older than 10 years
      */
     private void deleteAllPatientArchiveOlderThanTen() {
         TreatmentDAO tDao = DAOFactory.getDAOFactory().createTreatmentDAO();
@@ -269,6 +266,14 @@ public class AllPatientController {
 
     }
 
+    /**
+     * the method calculates difference between the Dates from now and 10 years ago and return true
+     * if the date of archived patient is older than 10 years
+     * 
+     * @param dateArchive is the date of archived patient
+     * 
+     * @return true if the date of archived is older than 10 years
+     */
     private boolean isMoreThanTenYearsAgo(String dateArchive) {
         LocalDate date = DateConverter.convertStringToLocalDate(dateArchive);
         LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
