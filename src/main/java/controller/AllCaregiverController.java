@@ -13,10 +13,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import model.Caregiver;
 import utils.DateConverter;
+import utils.LogChanges;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+
+import static utils.LogChanges.LogChangesToFile;
 
 /**
  * The <code>AllCaregiverController</code> contains the entire logic of the patient view. It
@@ -147,12 +150,14 @@ public class AllCaregiverController {
 
     /**
      * updates a caregiver by calling the update-Method in the {@link CaregiverDAO}
+     * logs given caregiver by calling the LogChangesToFile-Method {@link LogChanges}
      *
      * @param t row to be updated by the user (includes the caregiver)
      */
     private void doUpdate(TableColumn.CellEditEvent<Caregiver, String> t){
         try {
             dao.update(t.getRowValue());
+            LogChangesToFile("Caregiver", t.getRowValue().toString());
         } catch (SQLException e) {
             e.printStackTrace();
         }

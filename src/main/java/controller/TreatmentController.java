@@ -1,5 +1,6 @@
 package controller;
 
+import datastorage.CaregiverDAO;
 import datastorage.DAOFactory;
 import datastorage.PatientDAO;
 import datastorage.TreatmentDAO;
@@ -9,8 +10,12 @@ import javafx.stage.Stage;
 import model.Patient;
 import model.Treatment;
 import utils.DateConverter;
+import utils.LogChanges;
+
 import java.sql.SQLException;
 import java.time.LocalDate;
+
+import static utils.LogChanges.LogChangesToFile;
 
 public class TreatmentController {
     @FXML
@@ -74,10 +79,16 @@ public class TreatmentController {
         stage.close();
     }
 
+    /**
+     * updates a treatment by calling the update-Method in the {@link TreatmentDAO}
+     * logs given treatment by calling the LogChangesToFile-Method {@link LogChanges}
+     *
+     */
     private void doUpdate(){
         TreatmentDAO dao = DAOFactory.getDAOFactory().createTreatmentDAO();
         try {
             dao.update(treatment);
+            LogChangesToFile("treatment", treatment.toString());
         } catch (SQLException e) {
             e.printStackTrace();
         }

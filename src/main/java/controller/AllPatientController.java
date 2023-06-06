@@ -9,12 +9,18 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import model.Caregiver;
 import model.Patient;
 import utils.DateConverter;
 import datastorage.DAOFactory;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import utils.DateConverter;
+import utils.LogChanges;
+
+import static utils.LogChanges.LogChangesToFile;
 
 
 /**
@@ -162,12 +168,15 @@ public class AllPatientController {
 
     /**
      * updates a patient by calling the update-Method in the {@link PatientDAO}
+     * logs given patient by calling the LogChangesToFile-Method {@link LogChanges}
      * 
      * @param t row to be updated by the user (includes the patient)
      */
     private void doUpdate(TableColumn.CellEditEvent<Patient, String> t) {
         try {
             dao.update(t.getRowValue());
+            LogChangesToFile("Patient", t.getRowValue().toString());
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
