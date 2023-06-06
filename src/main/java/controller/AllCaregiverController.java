@@ -1,23 +1,34 @@
 package controller;
 
+import datastorage.AccountDAO;
 import datastorage.CaregiverDAO;
+import datastorage.ConnectionBuilder;
 import datastorage.DAOFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import model.Account;
 import model.Caregiver;
 import utils.DateConverter;
 import utils.LogChanges;
+import utils.StringUtil;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import static utils.LogChanges.LogChangesToFile;
 
@@ -211,14 +222,37 @@ public class AllCaregiverController {
             String surname = this.txfSurname.getText();
             String phoneNumber = this.txfTelephone.getText();
             String role = this.cbxRole.getValue().toString();
+            boolean roleAsBool = false;
             try {
                 Caregiver c = new Caregiver(firstname, surname, phoneNumber, role);
+                roleAsBool = c.RoleAsBool();
                 dao.create(c);
             } catch (SQLException e) {
                 e.printStackTrace();
+                return;
             }
             readAllAndShowInTableView();
             clearTextFields();
+
+
+            String username = firstname.toLowerCase()+'.'+ surname.toLowerCase().charAt(0)+phoneNumber.substring(Math.max(phoneNumber.length() - 2, 0));
+            String password = StringUtil.StringToSHA256(username);
+            long CID;
+            try {
+
+                Connection connection = ConnectionBuilder.getConnection();
+                PreparedStatement statement = connection.prepareStatement("SELECT CID from CAREGIVER WHERE firstname = '"+firstname+"' AND surname = '"+surname+"' AND phoneNumber = '"+phoneNumber+"'");
+                ResultSet resultSet = statement.executeQuery();
+
+                if (resultSet.next()) {
+                    CID = resultSet.getInt(1);
+                    AccountDAO accountDAO = DAOFactory.getDAOFactory().createAccountDAO();
+                    accountDAO.create(new Account(CID,username,password,roleAsBool));
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         } else {
             highlightEmptyField();
         }
@@ -298,6 +332,11 @@ public class AllCaregiverController {
 
     }
 
+    /**
+     * Method that Checks if an archived database record is older than ten years.
+     * @param dateArchive The Date of archival.
+     * @return Returns true if the record is archived for ten years or longer.
+     */
     private boolean isMoreThanTenYearsAgo(String dateArchive) {
         LocalDate date = DateConverter.convertStringToLocalDate(dateArchive);
         LocalDate tenYearsAgo = LocalDate.now().minusYears(10);

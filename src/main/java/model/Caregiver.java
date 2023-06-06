@@ -22,7 +22,7 @@ public class Caregiver extends User {
     public Caregiver(String firstname, String surname, String phoneNumber, String role) {
         super(firstname, surname, role);
         this.phoneNumber = phoneNumber;
-        this.dateOfArchive = dateOfArchive;
+        this.dateOfArchive = null;
     }
 
     /**
@@ -85,6 +85,10 @@ public class Caregiver extends User {
             return this.dateOfArchive.toString();
         }
         return null;
+    }
+
+    public boolean RoleAsBool(){
+        return !getRole().equals("Pfleger");
     }
 
     /**

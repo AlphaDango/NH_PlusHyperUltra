@@ -18,6 +18,11 @@ import static utils.MessageWindow.ShowMessage;
 import static utils.StringUtil.StringIsNumber;
 import static utils.StringUtil.StringToSHA256;
 
+/**
+ * @author Oliver Neumann
+ * @version 1.0
+ * Controller class for the AccountView in which a User can manage their credentials.
+ */
 public class AccountController {
 
     private Caregiver caregiver;
@@ -40,10 +45,16 @@ public class AccountController {
     @FXML
     private PasswordField pfNewPasswordControl;
 
+    /**
+     * Initialization Method to fill in the credentials in the corresponding textfields.
+     */
     public void initialize(){
         readAccountInformation();
     }
 
+    /**
+     * Reads the Caregiver and User Table in the Database and fills in the credentials.
+     */
     private void readAccountInformation(){
         CaregiverDAO dao = DAOFactory.getDAOFactory().createCaregiverDAO();
         try {
@@ -70,6 +81,9 @@ public class AccountController {
     }
 
     @FXML
+    /**
+     * ActionListener which handles the update of the user credentials.
+     */
     private void handleChangeAccountInformations(ActionEvent e){
 
         if(!StringIsNumber(tfPhone.getText())){
@@ -93,6 +107,9 @@ public class AccountController {
     }
 
     @FXML
+    /**
+     * ActionListener to change the passwort of the user.
+     */
     private void handleChangePassword(ActionEvent e){
         if(!pfNewPassword.getText().equals(pfNewPasswordControl.getText())){
             ShowMessage("Passwort ändern fehlgelschagen","Passwörter stimmen nicht überein!", Alert.AlertType.ERROR);

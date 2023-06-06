@@ -51,6 +51,10 @@ public class AllTreatmentController {
     private ArrayList<Patient> patientList;
     private Main main;
 
+    /**
+     * Initialisation of the AllTreatmentView which loads all treatments the logged in caregive should be able to see.
+     * Displays these treatments in a TableView.
+     */
     public void initialize() {
         //readAllAndShowInTableView();
         readByCIDAndShowInTableView();
@@ -69,6 +73,10 @@ public class AllTreatmentController {
         createComboBoxData();
     }
 
+    @Deprecated
+    /**
+     * Loads all treatments and displays them in the TableView regardless of visibility for a certain caregiver.
+     */
     public void readAllAndShowInTableView() {
         this.tableviewContent.clear();
         comboBox.getSelectionModel().select(0);
@@ -84,6 +92,9 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * Loads and displays
+     */
     public void readByCIDAndShowInTableView() {
         comboBox.getSelectionModel().select(0);
         this.tableviewContent.clear();

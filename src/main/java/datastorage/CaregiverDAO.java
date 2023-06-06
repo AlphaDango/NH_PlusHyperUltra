@@ -62,7 +62,7 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
     protected Caregiver getInstanceFromResultSet(ResultSet result) throws SQLException {
         Caregiver c = null;
         //LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
-        LocalDate dateOfArchive = DateConverter.convertStringToLocalDate(result.getString(7));
+        LocalDate dateOfArchive = DateConverter.convertStringToLocalDate(result.getString(6));
         c = new Caregiver(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getString(5), dateOfArchive);
         return c;
     }
