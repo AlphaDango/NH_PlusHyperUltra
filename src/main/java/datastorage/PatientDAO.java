@@ -48,6 +48,11 @@ public class PatientDAO extends DAOimp<Patient> {
         return String.format("SELECT * FROM patient WHERE pid = %d", key);
     }
 
+    @Override
+    protected String getReadByCIDStatementString(long key) {
+        return String.format("SELECT * FROM patient WHERE CID = %d", key);
+    }
+
     /**
      * maps a <code>ResultSet</code> to a <code>Patient</code>
      * 

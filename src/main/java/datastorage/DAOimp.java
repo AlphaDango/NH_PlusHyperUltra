@@ -41,6 +41,14 @@ public abstract class DAOimp<T> implements DAO<T>{
         return list;
     }
 
+    public List<T> readByID(int CID) throws SQLException {
+        ArrayList<T> list;
+        Statement st = conn.createStatement();
+        ResultSet resultSet = st.executeQuery(getReadByCIDStatementString(CID));
+        list = getListFromResultSet(resultSet);
+        return list;
+    }
+
     @Override
     public void update(T t) throws SQLException {
         Statement st = conn.createStatement();
@@ -56,6 +64,8 @@ public abstract class DAOimp<T> implements DAO<T>{
     protected abstract String getCreateStatementString(T t);
 
     protected abstract String getReadByIDStatementString(long key);
+
+    protected abstract String getReadByCIDStatementString(long key);
 
     protected abstract T getInstanceFromResultSet(ResultSet set) throws SQLException;
 

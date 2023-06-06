@@ -45,8 +45,13 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
         return String.format("SELECT * FROM caregiver WHERE cid = %d", key);
     }
 
+    @Override
+    protected String getReadByCIDStatementString(long key) {
+        return String.format("SELECT * FROM patient WHERE CID = %d", key);
+    }
+
     /**
-     * maps a <code>ResultSet</code> to a <code>Caregiver</code>
+     * maps a <code>ResultSet</code> to a <code>Patient</code>
      *
      * @param result ResultSet with a single row. Columns will be mapped to a caregiver-object.
      * @return caregiver with the data from the resultSet.

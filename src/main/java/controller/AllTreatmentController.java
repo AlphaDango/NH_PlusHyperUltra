@@ -53,7 +53,8 @@ public class AllTreatmentController {
     private Main main;
 
     public void initialize() {
-        readAllAndShowInTableView();
+        //readAllAndShowInTableView();
+        readByCIDAndShowInTableView();
         comboBox.setItems(myComboBoxData);
         comboBox.getSelectionModel().select(0);
         this.main = main;
@@ -83,10 +84,25 @@ public class AllTreatmentController {
         }
     }
 
+    public void readByCIDAndShowInTableView() {
+        this.tableviewContent.clear();
+        comboBox.getSelectionModel().select(0);
+        this.dao = DAOFactory.getDAOFactory().createTreatmentDAO();
+        List<Treatment> allTreatments;
+        try {
+            allTreatments = dao.readByID(LoginViewController.CID);
+            for (Treatment treatment : allTreatments) {
+                this.tableviewContent.add(treatment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void createComboBoxData(){
         PatientDAO dao = DAOFactory.getDAOFactory().createPatientDAO();
         try {
-            patientList = (ArrayList<Patient>) dao.readAll();
+            patientList = (ArrayList<Patient>) dao.readByID(LoginViewController.CID);
             this.myComboBoxData.add("alle");
             for (Patient patient: patientList) {
                 this.myComboBoxData.add(patient.getSurname());
@@ -105,7 +121,7 @@ public class AllTreatmentController {
         List<Treatment> allTreatments;
         if(p.equals("alle")){
             try {
-                allTreatments= this.dao.readAll();
+                allTreatments= this.dao.readByID(LoginViewController.CID);
                 for (Treatment treatment : allTreatments) {
                     this.tableviewContent.add(treatment);
                 }
