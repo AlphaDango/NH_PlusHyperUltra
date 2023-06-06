@@ -5,6 +5,7 @@ import utils.DateConverter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -26,15 +27,18 @@ public class PatientDAO extends DAOimp<Patient> {
     /**
      * generates a <code>INSERT INTO</code>-Statement for a given patient
      * 
-     * @param patient for which a specific INSERT INTO is to be created
+     * @param patient for which a specific INSERT INTO is to be created //DATEOFARCHIVE
      * @return <code>String</code> with the generated SQL.
      */
     @Override
     protected String getCreateStatementString(Patient patient) {
+        String dateOfArchive =
+                patient.getDateOfArchive() != null ? "'" + patient.getDateOfArchive() + "'"
+                        : "NULL";
         return String.format(
-                "INSERT INTO patient (firstname, surname, dateOfBirth, carelevel, roomnumber) VALUES ('%s', '%s', '%s', '%s', '%s')",
+                "INSERT INTO patient (firstname, surname, dateOfBirth, carelevel, roomnumber, dateOfArchive) VALUES ('%s', '%s', '%s', '%s', '%s', %s)",
                 patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(),
-                patient.getCareLevel(), patient.getRoomnumber());
+                patient.getCareLevel(), patient.getRoomnumber(), dateOfArchive);
     }
 
     /**
@@ -63,8 +67,9 @@ public class PatientDAO extends DAOimp<Patient> {
     protected Patient getInstanceFromResultSet(ResultSet result) throws SQLException {
         Patient p = null;
         LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
-        p = new Patient(result.getInt(1), result.getString(2), result.getString(3), date,
-                result.getString(5), result.getString(6));
+        LocalDate dateOfArchive = DateConverter.convertStringToLocalDate(result.getString(7));
+        p = new Patient(result.getLong(1), result.getString(2), result.getString(3), date,
+                result.getString(5), result.getString(6), dateOfArchive);
         return p;
     }
 
@@ -90,8 +95,9 @@ public class PatientDAO extends DAOimp<Patient> {
         Patient p = null;
         while (result.next()) {
             LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
+            LocalDate dateOfArchive = DateConverter.convertStringToLocalDate(result.getString(7));
             p = new Patient(result.getInt(1), result.getString(2), result.getString(3), date,
-                    result.getString(5), result.getString(6));
+                    result.getString(5), result.getString(6), dateOfArchive);
             list.add(p);
         }
         return list;
@@ -105,11 +111,14 @@ public class PatientDAO extends DAOimp<Patient> {
      */
     @Override
     protected String getUpdateStatementString(Patient patient) {
+        String dateOfArchive =
+                patient.getDateOfArchive() != null ? "'" + patient.getDateOfArchive() + "'"
+                        : "NULL";
         return String.format(
-                "UPDATE patient SET firstname = '%s', surname = '%s', dateOfBirth = '%s', carelevel = '%s', "
-                        + "roomnumber = '%s', WHERE pid = %d",
+                "UPDATE patient SET firstname = '%s', surname = '%s', dateOfBirth = '%s', carelevel = '%s',"
+                        + "roomnumber = '%s', dateOfArchive = %s WHERE pid = %d",
                 patient.getFirstName(), patient.getSurname(), patient.getDateOfBirth(),
-                patient.getCareLevel(), patient.getRoomnumber(), patient.getPid());
+                patient.getCareLevel(), patient.getRoomnumber(), dateOfArchive, patient.getPid());
     }
 
     /**
@@ -122,4 +131,45 @@ public class PatientDAO extends DAOimp<Patient> {
     protected String getDeleteStatementString(long key) {
         return String.format("Delete FROM patient WHERE pid=%d", key);
     }
+
+    /**
+     * 
+     * 
+     * @return list of All Patient that are not archived
+     */
+    public ArrayList<Patient> getAllNoneArchivedPatients() throws SQLException {
+        Statement st = conn.createStatement();
+        return getListFromResultSet(st.executeQuery(getStatementAllNoneArchivedPatients()));
+    }
+
+    /**
+     * 
+     * 
+     * @return <code>string statement</code> to query all the patients if there is no date for
+     *         archiving
+     */
+    private String getStatementAllNoneArchivedPatients() {
+        return "SELECT * FROM Patient WHERE DATEOFARCHIVE IS NULL";
+    }
+
+    /**
+     * 
+     * 
+     * @return list of All Patient that are archived
+     */
+    public ArrayList<Patient> getAllArchivedPatients() throws SQLException {
+        Statement st = conn.createStatement();
+        return getListFromResultSet(st.executeQuery(getStatementAllArchivedPatients()));
+    }
+
+    /**
+     * 
+     * 
+     * @return <code>string statement</code> to query all the patients if there is a date for
+     *         archiving
+     */
+    private String getStatementAllArchivedPatients() {
+        return "SELECT * FROM Patient WHERE DATEOFARCHIVE IS NOT NULL";
+    }
+
 }

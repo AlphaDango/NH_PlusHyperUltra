@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DAOimp<T> implements DAO<T>{
+public abstract class DAOimp<T> implements DAO<T> {
     protected Connection conn;
 
     public DAOimp(Connection conn) {
@@ -76,4 +76,5 @@ public abstract class DAOimp<T> implements DAO<T>{
     protected abstract String getUpdateStatementString(T t);
 
     protected abstract String getDeleteStatementString(long key);
+
 }

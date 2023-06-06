@@ -13,8 +13,8 @@ public class Treatment {
     private String description;
     private String remarks;
 
-    public Treatment(long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks) {
+    public Treatment(long pid, LocalDate date, LocalTime begin, LocalTime end, String description,
+            String remarks) {
         this.pid = pid;
         this.date = date;
         this.begin = begin;
@@ -23,8 +23,8 @@ public class Treatment {
         this.remarks = remarks;
     }
 
-    public Treatment(long tid, long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks) {
+    public Treatment(long tid, long pid, LocalDate date, LocalTime begin, LocalTime end,
+            String description, String remarks) {
         this.tid = tid;
         this.pid = pid;
         this.date = date;
@@ -55,8 +55,8 @@ public class Treatment {
     }
 
     public void setDate(String s_date) {
-        LocalDate date = DateConverter.convertStringToLocalDate(s_date);
-        this.date = date;
+        this.date = DateConverter.convertStringToLocalDate(s_date);
+
     }
 
     public void setBegin(String begin) {
@@ -86,12 +86,8 @@ public class Treatment {
     }
 
     public String toString() {
-        return "\nBehandlung" + "\nTID: " + this.tid +
-                "\nPID: " + this.pid +
-                "\nDate: " + this.date +
-                "\nBegin: " + this.begin +
-                "\nEnd: " + this.end +
-                "\nDescription: " + this.description +
-                "\nRemarks: " + this.remarks + "\n";
+        return "\nBehandlung" + "\nTID: " + this.tid + "\nPID: " + this.pid + "\nDate: " + this.date
+                + "\nBegin: " + this.begin + "\nEnd: " + this.end + "\nDescription: "
+                + this.description + "\nRemarks: " + this.remarks + "\n";
     }
 }

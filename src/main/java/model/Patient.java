@@ -13,6 +13,7 @@ public class Patient extends Person {
     private LocalDate dateOfBirth;
     private String careLevel;
     private String roomnumber;
+    private LocalDate dateOfArchive;
     private List<Treatment> allTreatments = new ArrayList<Treatment>();
 
     /**
@@ -23,6 +24,7 @@ public class Patient extends Person {
      * @param dateOfBirth
      * @param careLevel
      * @param roomnumber
+     * @param dateOfArchive
      */
     public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel,
             String roomnumber) {
@@ -32,24 +34,18 @@ public class Patient extends Person {
         this.roomnumber = roomnumber;
     }
 
-    /**
-     * constructs a patient from the given params.
-     * 
-     * @param pid
-     * @param firstName
-     * @param surname
-     * @param dateOfBirth
-     * @param careLevel
-     * @param roomnumber
-     */
-    public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth,
-            String careLevel, String roomnumber) {
+
+    public Patient(long id, String firstName, String surname, LocalDate dateOfBirth,
+            String careLevel, String roomnumber, LocalDate dateOfArchive) {
+
         super(firstName, surname);
-        this.pid = pid;
+        this.pid = id;
         this.dateOfBirth = dateOfBirth;
         this.careLevel = careLevel;
         this.roomnumber = roomnumber;
+        this.dateOfArchive = dateOfArchive;
     }
+
 
     /**
      *
@@ -75,6 +71,27 @@ public class Patient extends Person {
     public void setDateOfBirth(String dateOfBirth) {
         LocalDate birthday = DateConverter.convertStringToLocalDate(dateOfBirth);
         this.dateOfBirth = birthday;
+    }
+
+    /**
+     * convert given param to a localDate and store as new <code>birthOfDate</code>
+     * 
+     * archive date string in the following format: YYYY-MM-DD
+     */
+    public void setDateOfArchive(LocalDate timeOfArchive) {
+        this.dateOfArchive = timeOfArchive;
+    }
+
+    /**
+     * 
+     * 
+     * @return dateOfArchived as string
+     */
+    public String getDateOfArchive() {
+        if (this.dateOfArchive != null) {
+            return this.dateOfArchive.toString();
+        }
+        return null;
     }
 
     /**
@@ -131,6 +148,7 @@ public class Patient extends Person {
     public String toString() {
         return "Patient" + "\nMNID: " + this.pid + "\nFirstname: " + this.getFirstName()
                 + "\nSurname: " + this.getSurname() + "\nBirthday: " + this.dateOfBirth
-                + "\nCarelevel: " + this.careLevel + "\nRoomnumber: " + this.roomnumber + "\n";
+                + "\nCarelevel: " + this.careLevel + "\nRoomnumber: " + this.roomnumber
+                + "\nDateOfArchive:" + this.dateOfArchive + "\n";
     }
 }
