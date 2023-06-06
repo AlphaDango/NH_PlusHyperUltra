@@ -28,11 +28,6 @@ public class MainWindowController {
     private Button btnCaregiver;
 
     public void initialize() {
-
-
-
-
-
         Platform.runLater(() -> {
             // Zugriff auf die Stage
             Stage stage = (Stage) mainBorderPane.getScene().getWindow();
@@ -115,6 +110,17 @@ public class MainWindowController {
         });
     }
 
+
+    @FXML
+    private void handleShowAccount(ActionEvent e) {
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/AccountView.fxml"));
+        try {
+            mainBorderPane.setCenter(loader.load());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        AccountController controller = loader.getController();
+    }
 
     @FXML
     private void handleShowAllPatient(ActionEvent e) {

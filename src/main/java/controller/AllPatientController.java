@@ -193,9 +193,10 @@ public class AllPatientController {
     /**
      *
      */
-    private void readAssignedAndShowInTable(){this.tableviewContent.clear();
+    private void readAssignedAndShowInTable(){
         this.dao = DAOFactory.getDAOFactory().createPatientDAO();
         List<Patient> allPatients;
+        this.tableviewContent.clear();
         try {
             allPatients = dao.readByID(LoginViewController.CID);
             for (Patient p : allPatients) {

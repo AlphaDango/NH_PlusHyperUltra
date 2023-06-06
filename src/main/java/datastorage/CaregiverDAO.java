@@ -60,7 +60,7 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
     protected Caregiver getInstanceFromResultSet(ResultSet result) throws SQLException {
         Caregiver c = null;
         //LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
-        c = new Caregiver(result.getString(1), result.getString(2), result.getString(3), "Pfleger");
+        c = new Caregiver(result.getInt(1),result.getString(2), result.getString(3), result.getString(4), "Pfleger");
         return c;
     }
 
@@ -101,8 +101,8 @@ public class CaregiverDAO extends DAOimp<Caregiver> {
     @Override
     protected String getUpdateStatementString(Caregiver caregiver) {
         return String.format(
-                "UPDATE caregiver SET firstname = '%s', surname = '%s', phoneNumber = '%s', role = '%s', WHERE cid = %d",
-                caregiver.getFirstName(), caregiver.getSurname(), caregiver.getPhoneNumber(), caregiver.getRole(), caregiver.getCid());
+                "UPDATE caregiver SET firstname = '%s', surname = '%s', phoneNumber = '%s' WHERE cid = %d",
+                caregiver.getFirstName(), caregiver.getSurname(), caregiver.getPhoneNumber(), caregiver.getCid());
     }
 
     /**
