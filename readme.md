@@ -67,9 +67,9 @@ TF_1: Alle Pflegekräfte anzeigen
 -Vorbedingung: Der Nutzer/ die Nutzerin hat sich angemeldet und in der Navigationsleiste “Pflegekräfte” ausgewählt
 -auszuführende Testschritte: 
 1. Einloggen als Bereichsleiter/Supervisor
-2. Bereich Pflegekräfte auswählen
+2. Bereich Pflegekräfte auswählen  
 -erwartetes Ergebnis: Es werden alle Pflegekräfte,die in der Datenbankgespeichert sind, in einer tabellarischen Ansicht mit Vor- und Nachnamen und Telefonnummer und ihrer Rolle angezeigt.
-- ###Ergebnis: Pflegekräfte werden Bereichsleitern mit allen relevanten Daten angezeigt.
+- **Ergebnis:** Pflegekräfte werden Bereichsleitern mit allen relevanten Daten angezeigt.
 
 TF_2: neue Pflegekraft hinzufügen
 -Vorbedingung: Der Nutzer/ die Nutzerin hat sichangemeldet und in derNavigationsleiste “Pflegekräfte” ausgewählt
@@ -77,24 +77,24 @@ TF_2: neue Pflegekraft hinzufügen
 1.Nutzer/in hat alle vorgesehenen Felder (Vor- und Nachname,Telefonnummer, Rolle) ausgefüllt
 2.Nutzer/in hat den Button “hinzufügen” gedrückt
 -erwartetes Ergebnis: Der Tabelle wird die Pflegekraft mit ihren Daten und einer automatisch erstellten ID hinzugefügt und auch in der Datenbank gespeichert.
-- ###Ergebnis: Bei Eingabe aller erforderlichen Daten wird ein neuer Pfleger mit einer automatisch erstellten ID hinzugefügt und in der Datenbank gespeichert. Eingaben werden validiert und erst bei korrekter Belegung aller Felder wird eine neue Pflegekraft hinzugefügt. Beim Hinzufügen eines neuen Pflegers wird ebenfalls ein neuer User / Passwort für den Login und ihre Rolle generiert.
+- **Ergebnis:** Bei Eingabe aller erforderlichen Daten wird ein neuer Pfleger mit einer automatisch erstellten ID hinzugefügt und in der Datenbank gespeichert. Eingaben werden validiert und erst bei korrekter Belegung aller Felder wird eine neue Pflegekraft hinzugefügt. Beim Hinzufügen eines neuen Pflegers wird ebenfalls ein neuer User / Passwort für den Login und ihre Rolle generiert.
 
 TF_3: Pflegekraft-Daten ändern
 -Vorbedingung: Der Nutzer/ die Nutzerin hat auf derNavigationsleiste“Pflegekräfte” ausgewählt
 -auszuführende Testschritte:
 1.Nutzer/in wählt mit Doppelklick den zu ändernden Wert einer Pflegekraftaus
 2.Nutzer/in ändert den Wert
-3.Nutzer/in beendet die Eingabe mit der Entertaste
+3.Nutzer/in beendet die Eingabe mit der Entertaste  
 -erwartetes Ergebnis: Der geänderte Wert wird in der Tabelle angezeigt und zusätzlich in der Datenbank gespeichert
-- ###Ergebnis: Der geänderte Wert wird in der Tabelle angezeigt und in der Datenbank gespeichert
+- **Ergebnis:** Der geänderte Wert wird in der Tabelle angezeigt und in der Datenbank gespeichert
 
 TF_4: Pflegekraft-Daten löschen (sperren)
 -Vorbedingung: Der Nutzer/ die Nutzerin hat auf derNavigationsleiste“Pflegekräfte” ausgewählt
 -auszuführende Testschritte:
 1.Nutzer/in wählt die zu löschenden (sperrenden) Personen aus
-2.Nutzer/in drückt den “Löschen/Archivieren” (Sperren) Button
+2.Nutzer/in drückt den “Löschen/Archivieren” (Sperren) Button  
 -erwartetes Ergebnis: Die gelöschte bzw. gesperrte Pflegekraft wird nicht mehrin der Tabelle angezeigt, die Daten bleiben aber in der Datenbank (Speicherfrist), bis die Frist abgelaufen ist.
-- ###Ergebnis: Die gelöschte Pflegekraft wird nicht mehr in der Tabelle angezeigt und mit einem DATEOFARCHIVE in der Datenbank gespeichert. Nach ablauf der Speicherfrist von 10 Jahren, wird der Wert beim Aufruf der gesamten Daten entfernt.
+- **Ergebnis:** Die gelöschte Pflegekraft wird nicht mehr in der Tabelle angezeigt und mit einem DATEOFARCHIVE in der Datenbank gespeichert. Nach ablauf der Speicherfrist von 10 Jahren, wird der Wert beim Aufruf der gesamten Daten entfernt.
 
 
 ## Benutzername und Passwort für das Login
