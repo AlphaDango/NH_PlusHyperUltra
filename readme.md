@@ -147,5 +147,25 @@ TF_4: Löschung und Bearbeitung von Daten als Administrator
 -Erwartetes Ergebnis: Erfolgreiche Löschung & Bearbeitung von Daten
 - **Ergebnis:** Pflegerdaten können nur von Bereichsleitern bearbeitet werden. Patienten und Behandlungsdaten können auch von Pflegern bearbeitet werden, solange diese ihnen zugeordnet sind.
 
+## Entfernen Vermögensstand
+### Testfälle
+TF_1: Alle Views aufrufen
+-Vorbedingung:User hat sich angemeldet.
+-auszuführende Testschritte: Nacheinander jede View aufrufen.
+-erwartetes Ergebnis: Es befindet sich nirgendwo ein Feld “Vermögensstand”.
+- **Ergebnis:** Kein View enthält einen Tabelleneintrag mit einem Vermögensstand.
+
+TF_2: Datenbank überprüfen
+-Vorbedingung:User hat Zugang zu allen Datenbankfeldern(als Admin eingeloggt)
+-auszuführende Testschritte: Tabelle auf “Vermögensstand” hin überprüfen
+-erwartetes Ergebnis:Es befindet sich nirgendwo ein Feld “Vermögensstand”.
+- **Ergebnis:** Validierung kann nur über das DB-Script vorgenommen werden. Das Feld "Vermögensstand" wurde vollständig aus der Datenbank entfernt.
 
 ## Benutzername und Passwort für das Login
+### Login als Supervisor: 
+- Benutzername: Dango
+- Passwort: test
+
+### Login als Pfleger:
+- Benutzername: Axle
+- Passwort: test
