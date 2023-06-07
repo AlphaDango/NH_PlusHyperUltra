@@ -164,6 +164,14 @@ TF_2: Datenbank überprüfen
 ## Zusätzliche Inforamtionen
 Benutzer und Passwörter werden beim hinzufügen einer neuen Pflegekraft automatisch generiert.
 Jeder Benutzer kann seinen Usernamen, Telefonnummer sowie Passwort im Benutzermenü oben links ändern.
+Die generierten Logindaten setzen sich wie folgt zusammen mit diesem Beispiel:
+
+Vorname:  Max
+Nachname: Mustermann
+Tel.Nr.:  04209665238
+
+Daraus folgt der Username und das Passwort max.m38
+
 
 ## Benutzername und Passwort für das Login
 ### Login als Supervisor: 
